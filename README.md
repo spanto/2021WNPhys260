@@ -10,8 +10,13 @@ source scripts/nbgrader_funcs.sh
 
 # Instructions for assignment creator
 - Create/edit the assignments in the source directory
-- Use the functions in scripts/nbgrader_funcs.sh to go through the steps of validating the assignment, creating a release version of the assignment, and validating the release version of the assignment.
-- Post the release version of the assignment for students to download
+- Use the functions in scripts/nbgrader_funcs.sh from the top level directory to go through the steps of validating the assignment, creating a release version of the assignment, and validating the release version of the assignment.
+```
+nbvalidate_source pf1
+nbgenerate pf1
+nbvalidate_assignment pf1
+```
+- Post the release version of the assignment for students to download.
 - Note, students can either go through the notebook with jupyter notebook locally, or upload to google colab and download the .ipynb
 
 
