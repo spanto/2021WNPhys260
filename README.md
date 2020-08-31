@@ -22,9 +22,9 @@ nbvalidate_assignment pf1
 
 # Instructions for assignment grader
 Note:  Examples below are for the assignment pf1
-- For each downloaded student ipynb file, use the mv_assignments from the top level directory. e.g.,
+- For each downloaded student ipynb file, use the mv_assignments from the top level directory. e.g., if you downloaded a student's ipynb file into your Downloads directory, execute the following:
 ```
-mv_assignments Downloads/pf1.ipynb pf1
+mv_assignments ~/Downloads/pf1.ipynb pf1
 ```
 - Use the nbautograde function for the assignment to autograde the autogradeable parts, e.g.
 ```

@@ -45,4 +45,4 @@ function nbautograde {
     # grade new assignment. Expects argument like pf1, ps1, etc.
     eval assignment_name="$1"
     nbgrader autograde $assignment_name --force
-    }
+}
