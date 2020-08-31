@@ -8,15 +8,17 @@ c = get_config()
 # server set up.
 c.CourseDirectory.course_id = "2020FAPhys260"
 
+#c.Exchange.root = "./exchange"
+
 # Update this list with other assignments you want
-c.CourseDirectory.db_assignments = [dict(name="ps1")]
+c.CourseDirectory.db_assignments = [dict(name="pf1")]
 
 # Change the students in this list with that actual students in
 # your course
 c.CourseDirectory.db_students = [
-    dict(id="bitdiddle", first_name="Ben", last_name="Bitdiddle"),
-    dict(id="hacker", first_name="Alyssa", last_name="Hacker"),
-    dict(id="reasoner", first_name="Louis", last_name="Reasoner")
+    dict(id="cavestru", first_name="Camille", last_name="Avestruz"),
+    # dict(id="hacker", first_name="Alyssa", last_name="Hacker"),
+    # dict(id="reasoner", first_name="Louis", last_name="Reasoner")
 ]
 
 c.IncludeHeaderFooter.header = "source/header.ipynb"

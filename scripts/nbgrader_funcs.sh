@@ -36,6 +36,7 @@ function mv_assignments {
     # Strip the end
     uniqname=${uniqname%\\\"*}
     echo $uniqname
+    mkdir -p submitted/$uniqname/$assignment_name
     cp $assignment_file submitted/$uniqname/$assignment_name
 
 }
