@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Z. Ives 8/8/2019
+
+# Map Gradescope's submission dir to where nbgrader expects it
+mkdir submitted
+mkdir submitted/student
+ln -s `pwd`/submission submitted/student/pf2
+mkdir results
+echo > results/results.json
+# Copy the source files into the source directory
+cp header.ipynb source/
+cp -r pf2 source/
+# renaming submitted file (this is probably done in a wonky way, idk)
+cd ./submitted/student/pf2
+mv *.ipynb preflight2.ipynb
+cd ../../..
+# Init nbgrader database with one assignment (pf2)
+nbgrader db assignment add pf2
+nbgrader generate_assignment pf2 --IncludeHeaderFooter.header=source/header.ipynb --force
+# Run / rerun autograder on the submission
+nbgrader autograde pf2 --force
+# Optional: generate HTML feedback (we don't have a place to put it)
+#nbgrader feedback pf2
+nbgrader export
+# Overall assignment grades to JSON
+cat grades.csv | grep 'pf2,.*student.*' | jq --raw-input 'split("\n") | map(split(",")) |  map({"score": .[9], "visibility": "visible", "extra_data": { "max_score": .[10]}, "tests": [], "leaderboard": [{"name": "points", "value": .[9]}]}) | .[0]' > results/overall.json
+# Extract per-cell feedback to JSON
+#cat autograded/hacker/pf2/*ipynb | jq '{"tests": .cells | map( select ( .metadata.nbgrader.grade_id and .metadata.nbgrader.points and .outputs )  | {"name": .metadata.nbgrader.grade_id, "score": .metadata.nbgrader.points, "visibility": "visible", "extra_data": {"code": .source, "output": (.outputs | .) }, "output": (.outputs | map( . | select(.data."text/plain").data."text/plain"[], select(.ename).ename, select(.traceback).traceback[])) | join("\n") } )}' > results/tests.json
+cat autograded/student/pf2/*ipynb | jq '{"tests": .cells | map( select ( .metadata.nbgrader.grade_id and .metadata.nbgrader.points and .outputs )  | {"name": .metadata.nbgrader.grade_id, "score": .metadata.nbgrader.points, "visibility": "visible", "output": (.outputs | map( . | select(.ename).ename, select(.traceback).traceback[], select(.text).text[], select(.data."text/plain").data."text/plain"[])) | join("\n") } )}' > results/tests.json
+# Remove VT100 codes for cursor position etc
+sed -e "s/\\\\u001b\[[^m]*m//g" results/tests.json > results/tests2.json
+# Merge the JSON files to results.json for Gradescope
+jq -s '.[0] * .[1]' results/overall.json results/tests2.json > results/results.json
+cat results/results.json
+#rm results/overall.json results/tests*.json
